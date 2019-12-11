@@ -7,7 +7,6 @@ import os.path
 import optparse
 import sys
 from datetime import date, datetime
-
 if sys.version < '3': # for python2
     import urllib
 else: # for python3
@@ -26,7 +25,6 @@ class OptionParser (optparse.OptionParser):
             self.error("%s option not supplied" % option)
 
 ###########################################################################
-
 
 def checkDate(date_string):
 
@@ -113,6 +111,7 @@ if options.tile == None:
         if options.lat == None or options.lon == None:
             if options.latmin == None or options.lonmin == None or options.latmax == None or options.lonmax == None:
                 print("provide at least a point or  rectangle")
+
                 sys.exit(-1)
             else:
                 geom = 'rectangle'
@@ -127,7 +126,9 @@ if options.tile == None:
         if options.latmin == None and options.lonmin == None and options.latmax == None and options.lonmax == None and options.lat == None or options.lon == None:
             geom = 'location'
         else:
+
             print("please choose location and coordinates, but not both")
+
             sys.exit(-1)
 else:
     if (options.tile.startswith('T') and len(options.tile) == 6):
@@ -136,6 +137,7 @@ else:
     elif (not(options.tile.startswith('T')) and len(options.tile) == 5):
         location = 'T'+options.tile
     else:
+
         print('tile number much gave this format : T31TFJ')
 
 if geom == 'point':
@@ -163,22 +165,21 @@ if options.start_date != None:
     else:
         end_date = date.today().isoformat()
 
-
 # ====================
 # read config
 # ====================
 try:
-    file = '/home/nicolas/GDrive/TEFOR/Code/S2/theia_download/config_theia.cfg'
     config = {}
-#    f = open(options.alternative_config) # change to open instead of file for python3 support
-    print(options.alternative_config)
+#    f = open(options.alternative_config) # change to open function instead of file for python3 support
     f = open(file) # change to open instead of file for python3 support
     for line in f.readlines():
         spliteline = line.split('=', 1)
         if len(spliteline) == 2:
             config[spliteline[0].strip()] = spliteline[1].strip()
 except:
+
     print("error with config file opening or parsing")
+
     sys.exit(-2)
 
 config_error = False
@@ -190,6 +191,8 @@ for key_name in cheking_keys:
     if key_name not in config.keys():
         config_error = True
         print(str("error with config file, missing key : %s" % key_name))
+        print str("error with config file, missing key : %s" % key_name)
+
 if config_error:
     sys.exit(-2)
 
@@ -200,7 +203,6 @@ curl_proxy = ""
 if "proxy" in config.keys():
     curl_proxy = str('-x %s --proxy-user "%s:%s"' %
                      (config["proxy"], config["login_proxy"], config["password_proxy"]))
-
 
 # ============================================================
 # get a token to be allowed to bypass the authentification.
@@ -234,6 +236,7 @@ with open('token.json') as data_file:
         print("Authentification is probably wrong")
         print("check password file")
         print("password should only contain alpha-numerics")
+
         sys.exit(-1)
 os.remove('token.json')
 
@@ -251,6 +254,8 @@ dict_query['startDate'] = start_date
 dict_query['completionDate'] = end_date
 dict_query['maxRecords'] = 500
 
+if options.collection == "SENTINEL2" or options.collection == "VENUS":
+    dict_query['processingLevel'] = options.level
 
 if options.collection == "SENTINEL2" or options.collection == "VENUS":
     dict_query['processingLevel'] = options.level
@@ -301,7 +306,9 @@ try:
         tmpfile = "%s/%s.tmp" % (options.write_dir, prod)
         get_product = 'curl %s -o "%s" -k -H "Authorization: Bearer %s" %s/%s/collections/%s/%s/download/?issuerId=theia' % (
             curl_proxy, tmpfile, token, config["serveur"], config["resto"], options.collection, feature_id)
+
         print(get_product)
+
         if not(options.no_download) and not(file_exists):
             # download only if cloudCover below maxcloud
             if cloudCover <= options.maxcloud:
@@ -312,13 +319,16 @@ try:
                 with open(tmpfile) as f_tmp:
                     try:
                         tmp_data = json.load(f_tmp)
+
                         print("Result is a text file")
                         print(tmp_data)
+                        
                         sys.exit(-1)
                     except ValueError:
                         pass
 
                 os.rename("%s" % tmpfile, "%s/%s.zip" % (options.write_dir, prod))
+
                 print("product saved as : %s/%s.zip" % (options.write_dir, prod))
             else:
                 print("cloud cover too high : %s" % (cloudCover))

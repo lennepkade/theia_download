@@ -4,7 +4,7 @@ This is a simple piece of code to automatically download the products provided b
 
 This code was written thanks to the precious help of one my colleague at CNES [Jérôme Gasperi](https://www.linkedin.com/pulse/rocket-earth-your-pocket-gasperi-jerome) who developped the "rocket" interface which is used by Theia, and the mechanism to get a token. It was then adapted by Dominique Clesse for the new Muscate interface to download Sentinel-2 products.
 
-This code relies on python 2.7 and on the curl utility. *Installing curl is therefore a prerequisite*. It has been developped and tested on Linux. It might work on windows, but I cannot test it. To use the code, you need to have an account and a password [at theia](http://theia.cnes.fr/atdistrib), and you need to add it to the config file as explaned in the authentification paragraph.
+This code relies on python 2.7 **(a new python3 branch was added on the 29th of April)** and on the curl utility. *Installing curl is therefore a prerequisite*. It has been developped and tested on Linux. It might work on windows, but I cannot test it. To use the code, you need to have an account and a password [at theia](http://theia.cnes.fr/atdistrib), and you need to add it to the config file as explained in the authentification paragraph.
 
 ## Examples for various sensors
 If you have an account at theia, you may download products using command lines like 
@@ -15,13 +15,21 @@ If you have an account at theia, you may download products using command lines l
  
  - `python ./theia_download.py -l 'Toulouse' -c SENTINEL2 -a config_theia.cfg -d 2016-09-01 -f 2016-10-01 -m  50`
 
- which downloads the SENTINEL-2 products above Toulouse, acquired in September 2016 with less tha 50% cloud cover
+ which downloads the SENTINEL-2 products above Toulouse, acquired in September 2016 with less than 50% cloud cover
 
-- `python ./theia_download.py -l 'Toulouse' -c Landsat -a config_landsat.cfg -d 2016-09-01 -f 2016-10-01`
+- `python ./theia_download.py -l 'Toulouse' -c LANDSAT -a config_theia.cfg -d 2019-01-01 -f 2019-02-01`
 
- which downloads the LANDSAT-8 products above Toulouse, acquired in September 2016.
+ which downloads the LANDSAT-8 products above Toulouse, acquired in January 2019.
+ 
+ - `python ./theia_download.py -l 'Toulouse' -c Landsat -a config_theia.cfg -d 2016-09-01 -f 2016-10-01`
 
-- `python ./theia_download.py -l 'Toulouse' -c SpotWorldHeritage -a config_landsat.cfg -d 2006-01-01 -f 2007-01-01`
+ which downloads the LANDSAT-8 products, with the old MUSCATE format above Toulouse, acquired in September 2016.
+
+- `python ./theia_download.py -l 'ALSACE' -c VENUS -a config_theia.cfg -d 2019-01-01 -f 2019-02-01`
+
+ which downloads the VENUS products above ALSACE site, acquired in January 2019.
+ 
+- `python ./theia_download.py -l 'Toulouse' -c SpotWorldHeritage -a config_theia.cfg -d 2006-01-01 -f 2007-01-01`
 
  which downloads the SPOT World Heritage products above Toulouse, acquired in 2006.
 
@@ -29,7 +37,7 @@ If you have an account at theia, you may download products using command lines l
 
  which downloads the Theia snow products above Foix (Pyrenees), acquired in November 2016. The collection option is case sensitive.
 
-As you must have noted, there are two different config files, depending on the whether you are using SENTINEL2 data (config_theia.cfg) , or Landsat or Spot world Heritage data (config_landsat.cfg). This is temporary, due to the start of MUSCATE ground segment, and soon, all the products will accessed with the config_theia.cfg authentification.
+
 
 ## Other options
 
