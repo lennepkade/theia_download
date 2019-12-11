@@ -8,9 +8,9 @@ import optparse
 import sys
 from datetime import date, datetime
 
-if sys.version < '3':
+if sys.version < '3': # for python2
     import urllib
-else:
+else: # for python3
     import urllib.parse
 
 ###########################################################################
