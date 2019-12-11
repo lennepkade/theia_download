@@ -170,8 +170,7 @@ if options.start_date != None:
 # ====================
 try:
     config = {}
-#    f = open(options.alternative_config) # change to open function instead of file for python3 support
-    f = open(file) # change to open instead of file for python3 support
+    f = open(options.alternative_config) # change to open instead of file for python3 support
     for line in f.readlines():
         spliteline = line.split('=', 1)
         if len(spliteline) == 2:
@@ -191,7 +190,6 @@ for key_name in cheking_keys:
     if key_name not in config.keys():
         config_error = True
         print(str("error with config file, missing key : %s" % key_name))
-        print str("error with config file, missing key : %s" % key_name)
 
 if config_error:
     sys.exit(-2)
